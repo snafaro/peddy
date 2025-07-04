@@ -19,4 +19,39 @@ const showCategoryBtn = (arr) =>{
     });
 };
 
+// pets load and show
+const loadAllPets = async() =>{
+    const url = "https://openapi.programming-hero.com/api/peddy/pets";
+    const res = await fetch(url);
+    const data = await res.json();
+    showPets(data.pets);
+};
+
+const showPets = async(pets) =>{
+    const petsCardContainer = document.getElementById('petsCardContainer');
+    pets.forEach((pet) =>{
+        const div = document.createElement('div');
+        div.classList = "p-5 border border-[#1313131A] rounded"
+        div.innerHTML = `
+            <div class="h-[200px] w-full">
+                <img class="h-full w-full object-cover rounded" src="${pet.image}" />
+            </div>
+            <div class="border-b border-[#1313131A] py-4 mb-4">
+                <h2 class="font-bold text-[20px]">${pet.pet_name}</h2>
+                <p class="text-[#131313B3]">Breed : ${pet.breed}</p>
+                <p class="text-[#131313B3]">Birth : ${pet.date_of_birth}</p>
+                <p class="text-[#131313B3]">Gender : ${pet.gender}</p>
+                <p class="text-[#131313B3]">Price : ${pet.price}</p>
+            </div>
+            <div>
+            <button class="btn">Like</button>
+            <button class="btn text-[#0E7A81]">Adopt</button>
+            <button class="btn text-[#0E7A81]">Details</button>
+            </div>
+        `;
+        petsCardContainer.append(div);
+    });
+};
+
 loadCategoryBtn();
+loadAllPets();
