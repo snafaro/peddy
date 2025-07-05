@@ -1,4 +1,4 @@
-
+// load and show category btn
 const loadCategoryBtn = async() =>{
     const url = "https://openapi.programming-hero.com/api/peddy/categories";
     const res = await fetch(url);
@@ -54,6 +54,35 @@ function petsLike(h){
     likedCardContainer.append(img);
 }
 
+// card details using modal
+const loadDetails = async(id)=>{
+    const url = `https://openapi.programming-hero.com/api/peddy/pet/${id}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    showDetails(data.petData);
+}
+
+const showDetails = async(details)=>{
+    const detailsContainer = document.getElementById("detailsContainer");
+    detailsContainer.innerHTML = `
+            <div class="lg:h-[200px] md:h-[400px] w-full">
+                <img class="h-full w-full object-cover rounded" src="${details.image}" />
+            </div>
+            <div class="border-b border-[#1313131A] py-4 mb-4">
+                <h2 class="font-bold text-[20px]">${details.pet_name}</h2>
+                <p class="text-[#131313B3]">Breed : ${details.breed ? details.breed : "Not Found"}</p>
+                <p class="text-[#131313B3]">Birth : ${details.date_of_birth ? details.date_of_birth : "Not Found"}</p>
+                <p class="text-[#131313B3]">Gender : ${details.gender ? details.gender : "Not Found"}</p>
+                <p class="text-[#131313B3]">Price : $${details.price ? details.price : "Not Found"}</p>
+                <p class="text-[#131313B3]">Vaccinated Status : ${details.vaccinated_status ? details.vaccinated_status : "Not Found"}</p>
+            </div>
+            <div>
+                <p class="text-[#131313B3]">${details.pet_details}</p>
+            </div>
+    `;
+    document.getElementById("modalBtn").click();
+}
+
 // pets card show function
 const showPets = (pets) =>{
     const petsCardContainer = document.getElementById('petsCardContainer');
@@ -93,7 +122,7 @@ const showPets = (pets) =>{
                 </svg>
             </button>
             <button class="btn text-[#0E7A81] flex-1">Adopt</button>
-            <button class="btn text-[#0E7A81] flex-1">Details</button>
+            <button class="btn text-[#0E7A81] flex-1" onclick="loadDetails(${pet.petId})">Details</button>
             </div>
         `;
         petsCardContainer.append(div);
