@@ -1,3 +1,6 @@
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+};
 // category button load and show
 const loadCategoryBtn = async() =>{
     const url = "https://openapi.programming-hero.com/api/peddy/categories";
@@ -43,6 +46,12 @@ const loadAllPets = async() =>{
     const res = await fetch(url);
     const data = await res.json();
     showPets(data.pets);
+    // ✅ Scroll to top only after content has rendered
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 50); // Delay slightly to let DOM update
 };
 
 const showPets = (pets) =>{
@@ -60,6 +69,7 @@ const showPets = (pets) =>{
         return;
     }else{
         petsCardContainer.classList.add("grid");
+        petsCardContainer.classList.remove("py-[70px]","bg-[#13131308]","rounded","px-6");
     }
     pets.forEach((pet) =>{
         const div = document.createElement('div');
@@ -88,6 +98,11 @@ const showPets = (pets) =>{
         petsCardContainer.append(div);
     });
 };
+
+// view button functionality 
+  function scrollToBottom() {
+    document.getElementById("text-content").scrollIntoView({ behavior: "smooth" });
+  }
 
 loadCategoryBtn();
 loadAllPets();
